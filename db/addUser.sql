@@ -1,3 +1,3 @@
-INSERT INTO "listUser" (username, uid)
+INSERT INTO "user" (username, uid)
 VALUES ($1, $2)
 

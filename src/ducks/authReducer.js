@@ -2,12 +2,16 @@ import axios from "axios";
 
 const initialState = {
   authError: null,
-  user: []
+  user: [],
+  lists: [],
+  listDetails: {}
 };
 
 const SIGNUP = "SIGNUP";
 const LOGIN = "LOGIN";
 const LOGOUT = "LOGOUT";
+const CREATE_LIST = "CREATE_LIST";
+const GET_LIST = "GET_LIST";
 
 export const signUp = newUser => {
   return (dispatch, getState, { getFirebase }) => {
@@ -38,8 +42,11 @@ export const login = credentials => {
     firebase
       .auth()
       .signInWithEmailAndPassword(credentials.email, credentials.password)
-      .then(() => {
-        dispatch({ type: `${LOGIN}_SUCCES` });
+      .then(response => {
+        dispatch({
+          type: `${LOGIN}_SUCCESS`,
+          payload: axios.post("/auth/login", { uid: response.user.uid })
+        });
       })
       .catch(err => {
         dispatch({ type: `${LOGIN}_ERROR`, err });
@@ -56,7 +63,26 @@ export const logout = () => {
       .signOut()
       .then(() => {
         dispatch({ type: `${LOGOUT}_SUCCESS` });
+      })
+      .then(response => {
+        axios.post("/auth/logout");
       });
+  };
+};
+
+export const createList = (title, listItem) => {
+  const items = listItem.toString();
+  console.log(items);
+  return {
+    type: `${CREATE_LIST}_SUCCESS`,
+    payload: axios.post("/create/list", { title, items })
+  };
+};
+
+export const getLists = () => {
+  return {
+    type: `${GET_LIST}_SUCCESS`,
+    payload: axios.get("/user/lists")
   };
 };
 
@@ -69,9 +95,15 @@ const authReducer = (state = initialState, action) => {
     case `${LOGIN}_ERROR`:
       return { ...state, authError: action.err.message };
     case `${LOGIN}_SUCCESS`:
-      return { ...state, authError: null };
+      console.log(action.payload);
+      return { ...state, user: action.payload.data, authError: null };
     case `${LOGOUT}_SUCCESS`:
       return state;
+    case `${CREATE_LIST}_SUCCESS`:
+      return { ...state };
+    case `${GET_LIST}_SUCCESS`:
+      console.log(action.payload.data);
+      return { ...state, lists: action.payload.data };
     default:
       return state;
   }
