@@ -12,13 +12,13 @@ const register = (req, res) => {
     });
 };
 
-const login = (req, res) => {
+const login = async (req, res) => {
   const { uid } = req.body;
   const db = req.app.get("db");
 
-  db.findUser(uid).then(response => {
+  db.findUser(uid).then(async response => {
     // console.log(response);
-    req.session.user = {
+    await req.session.user = {
       id: response[0].id,
       username: response[0].username,
       uid: response[0].uid
@@ -58,6 +58,7 @@ const creatList = (req, res) => {
 
 const getLists = (req, res) => {
   const { id } = req.session.user;
+  console.log(id);
   const db = req.app.get("db");
 
   db.getUserLists(id)

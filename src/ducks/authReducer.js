@@ -62,10 +62,10 @@ export const logout = () => {
       .auth()
       .signOut()
       .then(() => {
-        dispatch({ type: `${LOGOUT}_SUCCESS` });
-      })
-      .then(response => {
-        axios.post("/auth/logout");
+        dispatch({
+          type: `${LOGOUT}_SUCCESS`,
+          payload: axios.post("/auth/logout")
+        });
       });
   };
 };
@@ -79,12 +79,14 @@ export const createList = (title, listItem) => {
   };
 };
 
-export const getLists = () => {
-  return {
-    type: `${GET_LIST}_SUCCESS`,
-    payload: axios.get("/user/lists")
-  };
-};
+// export const getLists = () => {
+//   return (dispatch, getState) => {
+//     dispatch({
+//       type: `${GET_LIST}_SUCCESS`,
+//       payload: axios.get("/user/lists")
+//     });
+//   };
+// };
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -94,16 +96,16 @@ const authReducer = (state = initialState, action) => {
       return { ...state, authError: null };
     case `${LOGIN}_ERROR`:
       return { ...state, authError: action.err.message };
-    case `${LOGIN}_SUCCESS`:
+    case `${LOGIN}_SUCCESS_FULFILLED`:
       console.log(action.payload);
       return { ...state, user: action.payload.data, authError: null };
     case `${LOGOUT}_SUCCESS`:
-      return state;
+      return { ...state, user: null };
     case `${CREATE_LIST}_SUCCESS`:
       return { ...state };
-    case `${GET_LIST}_SUCCESS`:
-      console.log(action.payload.data);
-      return { ...state, lists: action.payload.data };
+    // case `${GET_LIST}_SUCCESS_FULFILLED`:
+    //   console.log(action.payload);
+    //   return { ...state, lists: action.payload.data };
     default:
       return state;
   }

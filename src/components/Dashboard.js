@@ -1,20 +1,35 @@
 import React, { Component } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
+import { getLists } from "../ducks/authReducer";
 import { Redirect } from "react-router-dom";
 import CreateList from "./CreateList";
 import Lists from "./Lists";
+import axios from "axios";
 
 export class Dashboard extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      lists: []
+    };
+  }
+
+  componentDidMount() {
+    axios.get("/user/lists").then(response => {
+      this.setState({ lists: response.data });
+    });
+  }
+
   render() {
     const { auth } = this.props;
-    // console.log(this.props.auth.uid);
+    console.log(this.state);
     if (!auth.uid) return <Redirect to="/login" />;
     return (
       <div>
         Dashboard
         <CreateList />
-        <Lists />
+        <Lists lists={this.state.lists} />
       </div>
     );
   }
@@ -22,9 +37,20 @@ export class Dashboard extends Component {
 
 const mapStateToProps = state => {
   const { auth } = state.firebase;
+  const { user } = state.auth;
   return {
-    auth
+    auth,
+    user
   };
 };
 
-export default connect(mapStateToProps)(Dashboard);
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     getLists: () => dispatch(getLists())
+//   };
+// };
+
+export default connect(
+  mapStateToProps
+  // mapDispatchToProps
+)(Dashboard);

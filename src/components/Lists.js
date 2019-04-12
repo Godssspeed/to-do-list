@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import { getLists } from "../ducks/authReducer";
 
 export class Lists extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {};
   }
 
@@ -13,7 +13,7 @@ export class Lists extends Component {
   // }
 
   // componentDidUpdate(prevProps) {
-  //   if (this.props !== prevProps) {
+  //   if (this.props.lists !== prevProps.lists) {
   //     this.props.getLists();
   //   }
   // }
@@ -21,18 +21,26 @@ export class Lists extends Component {
   render() {
     console.log(this.props);
     const { lists } = this.props;
-    return <div>{lists}</div>;
+    const listTitle = lists.map(e => {
+      return <h4 key={e.id}>{e.title}</h4>;
+    });
+    return <div>{listTitle}</div>;
   }
 }
 
-const mapStateToProps = state => {
-  const { lists } = state.auth;
-  return {
-    lists
-  };
-};
+// const mapStateToProps = state => {
+//   const { lists } = state.auth;
+//   return {
+//     lists
+//   };
+// };
 
-export default connect(
-  mapStateToProps,
-  { getLists }
-)(Lists);
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     getLists: () => dispatch(getLists())
+//   };
+// };
+
+export default connect()(Lists);
+// mapStateToProps
+// mapDispatchToProps
