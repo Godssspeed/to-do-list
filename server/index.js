@@ -11,7 +11,9 @@ const {
   login,
   logout,
   creatList,
-  getLists
+  getLists,
+  deleteListItems,
+  deleteListTitle
 } = require("./controller/authController");
 
 const app = express();
@@ -41,6 +43,8 @@ app.post("/auth/logout", logout);
 
 app.post("/create/list", creatList);
 app.get("/user/lists", getLists);
+app.delete("/delete/listitems/:list_id", deleteListItems);
+app.delete("/delete/listtitle/:id", deleteListTitle);
 
 app.listen(SERVER_PORT || 4000, () => {
   console.log(`Listening on ${SERVER_PORT}`);

@@ -1,1 +1,1 @@
-SELECT * FROM "list" WHERE user_id = $1
+SELECT * FROM list JOIN content c ON list.title = c.list_title WHERE list.user_id = $1

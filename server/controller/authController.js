@@ -18,7 +18,8 @@ const login = async (req, res) => {
 
   db.findUser(uid).then(async response => {
     // console.log(response);
-    await req.session.user = {
+
+    req.session.user = {
       id: response[0].id,
       username: response[0].username,
       uid: response[0].uid
@@ -58,16 +59,41 @@ const creatList = (req, res) => {
 
 const getLists = (req, res) => {
   const { id } = req.session.user;
-  console.log(id);
+
   const db = req.app.get("db");
 
   db.getUserLists(id)
     .then(response => {
-      console.log(response);
       res.status(200).json(response);
     })
     .catch(err => {
       res.status(500).send("Error Mate");
+    });
+};
+
+const deleteListItems = (req, res) => {
+  const { list_id } = req.params;
+  const db = req.app.get("db");
+
+  db.deleteListItems(list_id)
+    .then(response => {
+      res.sendStatus(200);
+    })
+    .catch(err => {
+      res.status(500).send("Error");
+    });
+};
+
+const deleteListTitle = (req, res) => {
+  const { id } = req.params;
+  const db = req.app.get("db");
+
+  db.deleteListTitle(id)
+    .then(response => {
+      res.sendStatus(200);
+    })
+    .catch(err => {
+      res.status(500).send("Error");
     });
 };
 
@@ -76,5 +102,7 @@ module.exports = {
   login,
   logout,
   creatList,
-  getLists
+  getLists,
+  deleteListItems,
+  deleteListTitle
 };

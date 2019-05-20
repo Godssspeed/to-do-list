@@ -12,6 +12,8 @@ const LOGIN = "LOGIN";
 const LOGOUT = "LOGOUT";
 const CREATE_LIST = "CREATE_LIST";
 const GET_LIST = "GET_LIST";
+const DELETE_ITEMS = "DELETE_ITEMS";
+const DELETE_TITLE = "DELETE_TITLE";
 
 export const signUp = newUser => {
   return (dispatch, getState, { getFirebase }) => {
@@ -79,6 +81,20 @@ export const createList = (title, listItem) => {
   };
 };
 
+export const deleteItems = list_id => {
+  return {
+    type: `${DELETE_ITEMS}_SUCCESS`,
+    payload: axios.delete(`/delete/listitems/${list_id}`)
+  };
+};
+
+export const deleteTitle = id => {
+  return {
+    type: `${DELETE_TITLE}_SUCCESS`,
+    payload: axios.delete(`/delete/listtitle/${id}`)
+  };
+};
+
 // export const getLists = () => {
 //   return (dispatch, getState) => {
 //     dispatch({
@@ -102,6 +118,10 @@ const authReducer = (state = initialState, action) => {
     case `${LOGOUT}_SUCCESS`:
       return { ...state, user: null };
     case `${CREATE_LIST}_SUCCESS`:
+      return { ...state };
+    case `${DELETE_ITEMS}_SUCCESS`:
+      return { ...state };
+    case `${DELETE_TITLE}_SUCCESS`:
       return { ...state };
     // case `${GET_LIST}_SUCCESS_FULFILLED`:
     //   console.log(action.payload);

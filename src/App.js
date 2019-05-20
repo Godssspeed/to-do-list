@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import routes from "./components/routes";
 
 import "./App.css";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/layout/Navbar";
 
 class App extends Component {
   render() {

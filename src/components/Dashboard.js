@@ -16,18 +16,22 @@ export class Dashboard extends Component {
   }
 
   componentDidMount() {
-    axios.get("/user/lists").then(response => {
-      this.setState({ lists: response.data });
+    axios.get("/user/lists").then(async response => {
+      await this.setState({ lists: response.data });
+    });
+  }
+  componentDidUpdate() {
+    axios.get("/user/lists").then(async response => {
+      await this.setState({ lists: response.data });
     });
   }
 
   render() {
     const { auth } = this.props;
-    console.log(this.state);
+
     if (!auth.uid) return <Redirect to="/login" />;
     return (
       <div>
-        Dashboard
         <CreateList />
         <Lists lists={this.state.lists} />
       </div>

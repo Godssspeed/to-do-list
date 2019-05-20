@@ -1,0 +1,1 @@
+DELETE FROM content WHERE list_id = $1
