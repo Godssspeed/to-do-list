@@ -27,7 +27,8 @@ const styles = theme => ({
   listInfo: {
     width: "100%",
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "column",
+    textAlign: "left"
   },
   list: {
     listStyleType: "none",

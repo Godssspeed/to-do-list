@@ -17,16 +17,21 @@ import ListDetails from "./ListDetails";
 
 const styles = theme => ({
   main: {
-    width: "50vw",
+    width: "100vw",
     height: "50vh",
     margin: "0 auto",
-    marginTop: "5rem",
+    marginTop: "1rem",
     background: theme.palette.primary.main,
     padding: "1rem",
     overflowY: "scroll"
   },
   title: {
     fontSize: "1.5rem"
+  },
+  panel: {
+    width: "90%",
+    border: "2px inset",
+    borderColor: theme.palette.secondary.main
   }
 });
 
@@ -61,7 +66,7 @@ export class Lists extends Component {
         return (
           <ExpansionPanel
             key={e.id}
-            className="test"
+            className={classes.panel}
             onClick={this.handleExpanded}
           >
             <ExpansionPanelSummary>

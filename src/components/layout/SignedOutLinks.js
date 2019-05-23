@@ -1,17 +1,52 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const SignedOutLinks = () => {
+import { withStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
+import PropTypes from "prop-types";
+
+const styles = theme => ({
+  signInButton: {
+    color: theme.palette.secondary.dark,
+    padding: "1 1.5rem",
+    letterSpacing: "2px",
+    textDecoration: "none"
+  },
+  signUpButton: {
+    border: "2px solid",
+    borderColor: theme.palette.secondary.main,
+    color: theme.palette.secondary.dark,
+    padding: "1 1.5rem",
+    letterSpacing: "2px",
+    marginLeft: "1rem"
+  },
+  navbar: {
+    width: "90%",
+    display: "flex",
+    alignContent: "center",
+    justifyContent: "flex-end",
+    marginTop: "2rem"
+  }
+});
+
+const SignedOutLinks = props => {
+  const { classes } = props;
   return (
-    <div>
+    <div className={classes.navbar}>
       <Link to="/login">
-        <button>Sign in</button>
+        <Button className={classes.signInButton} disableUnderline={true}>
+          Sign in
+        </Button>
       </Link>
       <Link to="/signup">
-        <button>Sign up</button>
+        <Button className={classes.signUpButton}>Sign up</Button>
       </Link>
     </div>
   );
 };
 
-export default SignedOutLinks;
+SignedOutLinks.propTypes = {
+  classes: PropTypes.object.isRequired
+};
+
+export default withStyles(styles)(SignedOutLinks);

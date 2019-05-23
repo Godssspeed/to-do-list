@@ -14,8 +14,8 @@ import PropTypes from "prop-types";
 
 const styles = theme => ({
   main: {
-    width: "50vw",
-    height: "25vh",
+    width: "100vw",
+    height: "50vh",
     margin: "0 auto",
     marginTop: "5rem",
     background: theme.palette.primary.main,
@@ -23,12 +23,19 @@ const styles = theme => ({
   },
 
   addButton: {
-    border: theme.palette.secondary.main,
-    marginLeft: "1rem"
+    border: "2px solid",
+    borderColor: theme.palette.secondary.dark,
+    color: theme.palette.secondary.dark,
+    fontWeight: "bold",
+    background: theme.palette.primary.light,
+    marginLeft: "2rem",
+    letterSpacing: "2px"
   },
   button: {
     background: theme.palette.secondary.main,
-    marginTop: "2rem"
+    marginTop: "2rem",
+    padding: "1 1.5rem",
+    letterSpacing: "2px"
   },
   form: {
     display: "flex",
@@ -36,7 +43,11 @@ const styles = theme => ({
     marginTop: "2rem",
     margin: "0 auto"
   },
-  itemInput: {}
+  itemInput: {
+    width: "100%",
+    height: "5rem ",
+    margin: " 0 1rem"
+  }
 });
 
 export class CreateList extends Component {
@@ -79,7 +90,10 @@ export class CreateList extends Component {
 
   saveListToDb = () => {
     const { listItem, title } = this.state;
-    this.props.createList(title, listItem);
+    this.props.createList(title, listItem).then(res => {
+      this.setState({ newItem: "" });
+      this.setState({ title: "" });
+    });
   };
 
   toggleEdit = () => {
@@ -90,9 +104,11 @@ export class CreateList extends Component {
     console.log(this.state);
     const { listItem, title, edit } = this.state;
     const { classes } = this.props;
-    const listToMap = listItem.map((e, i) => {
-      return <li key={i}>{e}</li>;
-    });
+    const listToMap =
+      listItem &&
+      listItem.map((e, i) => {
+        return <li key={i}>{e}</li>;
+      });
     return (
       <div>
         <Paper className={classes.main}>
@@ -122,7 +138,7 @@ export class CreateList extends Component {
           </div>
           <form onSubmit={this.handleSubmit} className={classes.form}>
             <FormControl>
-              <Input
+              <textarea
                 className={classes.itemInput}
                 placeholder="Add an item"
                 ref={el => (this.inputTitle = el)}
@@ -137,7 +153,7 @@ export class CreateList extends Component {
               Add
             </Button>
           </form>
-          <Typography variant="ul">{listToMap}</Typography>
+          <Typography variant="ul">{listToMap ? listToMap : null}</Typography>
           <div>
             <Button className={classes.button} onClick={this.saveListToDb}>
               Save List
